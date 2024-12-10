@@ -202,14 +202,16 @@ function App() {
             className="button-img"
           />
         </button>
-        <button className="help-button" onClick={openHelp}>
+      </div>
+
+      <button className="help-button" onClick={openHelp}>
         <img
           src="https://raw.githubusercontent.com/mike-cautela/MunchiMaps/main/Website/MunchiMaps%20Assets/MenuIcons/help-circle-grey.svg"
           alt="Help"
           className="help-button-img"
         />
       </button>
-      </div>
+      
     </>
   );
 }
