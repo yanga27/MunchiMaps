@@ -56,6 +56,14 @@ function App() {
     }
   };
 
+  const openHelp = () => {
+    closeAllPopups(); // Close any other open popups
+    const helpPopup = document.getElementById("help-popup");
+    if (helpPopup) {
+      helpPopup.style.display = "block";
+    }
+  };  
+
   return (
     <>
       <div className="logo-title">
@@ -153,6 +161,25 @@ function App() {
         </div>
       </div>
 
+      <div id="help-popup" className="popup-container" style={{ display: 'none' }}>
+        <div className="popup">
+          <div className="popup-header">
+            <span className="popup-close" onClick={closeAllPopups}>
+              &times;
+            </span>
+            <h2>Help</h2>
+          </div>
+          <div className="popup-content">
+            <p>Here you can provide helpful information about how to use the app.</p>
+            <ul>
+              <li>Search for buildings using the search bar.</li>
+              <li>Report issues using the report button.</li>
+              <li>Navigate the map for building locations.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
       <div id="buttons-container">
         <button className="button" onClick={openSearch}>
           <img
@@ -175,6 +202,13 @@ function App() {
             className="button-img"
           />
         </button>
+        <button className="help-button" onClick={openHelp}>
+        <img
+          src="https://raw.githubusercontent.com/mike-cautela/MunchiMaps/main/Website/MunchiMaps%20Assets/MenuIcons/help-circle-grey.svg"
+          alt="Help"
+          className="help-button-img"
+        />
+      </button>
       </div>
     </>
   );
