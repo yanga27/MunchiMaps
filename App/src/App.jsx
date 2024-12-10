@@ -31,7 +31,7 @@ function App() {
 
   const filterBuildings = (term) => {
     return buildings.filter((building) =>
-      building.name.toLowerCase().startsWith(term.toLowerCase())
+      building.name.toLowerCase().includes(term.toLowerCase())
     );
   };
 
@@ -40,13 +40,9 @@ function App() {
   };
 
   const closeAllPopups = () => {
-    // Close all popups (like report and search popups)
     if (searchPopupRef.current) {
       searchPopupRef.current.style.display = 'none';
       searchPopupRef.current.classList.remove('show');
-    }
-    if (helpPopupRef.current) {
-      helpPopupRef.current.style.display = 'none';
     }
   };
 
@@ -57,13 +53,6 @@ function App() {
       setTimeout(() => {
         searchPopupRef.current.classList.add('show');
       }, 10); // Trigger CSS transition
-    }
-  };
-
-  const openHelp = () => {
-    closeAllPopups();
-    if (helpPopupRef.current) {
-      helpPopupRef.current.style.display = 'block';
     }
   };
 
@@ -107,11 +96,60 @@ function App() {
             onChange={handleSearch}
           />
           <div id="searchResult" className="result">
-            {searchTerm &&
-              filterBuildings(searchTerm).map((building, index) => (
-                <li key={index}>{building.name}</li>
-              ))}
+            {searchTerm ? (
+              filterBuildings(searchTerm).length > 0 ? (
+                <ul>
+                  {filterBuildings(searchTerm).map((building, index) => (
+                    <li key={index} onClick={() => handleResultClick(building)}>
+                      {building.name}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No results found.</p>
+              )
+            ) : null}
           </div>
+        </div>
+      </div>
+
+      <div id="popup-report" className="popup-container">
+        <div className="popup">
+          <div className="popup-header">
+            <span className="popup-close" onClick={closeAllPopups}>
+              &times;
+            </span>
+            <h2>Report Issue</h2>
+          </div>
+          <form
+            id="reportForm"
+            className="popup-form"
+            onSubmit={(e) => {
+              e.preventDefault();
+              console.log('Submit Report');
+            }}
+          >
+            <div className="form-group">
+              <label htmlFor="reportTitle">Title:</label>
+              <input type="text" id="reportTitle" className="form-control" required />
+            </div>
+            <div className="form-group">
+              <label htmlFor="reportType">Type of Issue:</label>
+              <select id="reportType" className="form-control" required>
+                <option value="vending_machine">Vending Machine Issue</option>
+                <option value="location">Location Issue</option>
+                <option value="app_functionality">App Functionality Issue</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label htmlFor="reportDescription">Description:</label>
+              <textarea id="reportDescription" className="form-control" required />
+            </div>
+            <button type="submit" className="btn-submit">
+              Submit
+            </button>
+          </form>
         </div>
       </div>
 
