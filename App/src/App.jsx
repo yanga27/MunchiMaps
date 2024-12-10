@@ -55,6 +55,9 @@ function App() {
       searchPopupRef.current.style.display = 'none';
       searchPopupRef.current.classList.remove('show');
     }
+    if (helpPopupRef.current) {
+      helpPopupRef.current.style.display = 'none';
+    }
   };
 
   const openSearch = () => {
@@ -64,6 +67,13 @@ function App() {
       setTimeout(() => {
         searchPopupRef.current.classList.add('show');
       }, 10); // Trigger CSS transition
+    }
+  };
+
+  const openHelp = () => {
+    closeAllPopups();
+    if (helpPopupRef.current) {
+      helpPopupRef.current.style.display = 'block';
     }
   };
 
@@ -161,6 +171,26 @@ function App() {
               Submit
             </button>
           </form>
+        </div>
+      </div>
+
+      <div id="help-popup" ref={helpPopupRef} className="popup-container" style={{ display: 'none' }}>
+        <div className="popup">
+          <div className="popup-header">
+            <span className="popup-close" onClick={closeAllPopups}>
+              &times;
+            </span>
+            <h2>Help</h2>
+          </div>
+          <div className="popup-content">
+            <p>Welcome to MunchiMaps! Here's how to use the app:</p>
+            <ul>
+              <li>Use the search bar to find buildings on the map.</li>
+              <li>Click on a building in the search results to highlight it.</li>
+              <li>Report issues using the "Report" button.</li>
+              <li>Switch between dark and light modes.</li>
+            </ul>
+          </div>
         </div>
       </div>
 
