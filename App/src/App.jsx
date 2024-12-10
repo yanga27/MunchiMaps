@@ -1,12 +1,7 @@
-import { useState, useRef } from 'react';
-import './styles/MunchiMaps_stylesheet.css';
-import './styles/dark.css';
-import './styles/Location_Style_Sheet.css';
-import './styles/loading_animation_stylesheet.css';
-
 function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const searchPopupRef = useRef(null);
+  const helpPopupRef = useRef(null);
 
   const buildings = [
     { name: 'Folsom Library', drink: true, food: true },
@@ -55,6 +50,9 @@ function App() {
       searchPopupRef.current.style.display = 'none';
       searchPopupRef.current.classList.remove('show');
     }
+    if (helpPopupRef.current) {
+      helpPopupRef.current.style.display = 'none';
+    }
   };
 
   const openSearch = () => {
@@ -64,6 +62,13 @@ function App() {
       setTimeout(() => {
         searchPopupRef.current.classList.add('show');
       }, 10); // Trigger CSS transition
+    }
+  };
+
+  const openHelp = () => {
+    closeAllPopups();
+    if (helpPopupRef.current) {
+      helpPopupRef.current.style.display = 'block';
     }
   };
 
@@ -80,7 +85,7 @@ function App() {
         <div id="map"></div>
       </div>
 
-      <button className="help-button" onClick={() => console.log('Open Help')}>
+      <button className="help-button" onClick={openHelp}>
         <img
           src="https://raw.githubusercontent.com/mike-cautela/MunchiMaps/main/Website/MunchiMaps%20Assets/MenuIcons/help-circle-grey.svg"
           alt="Help"
@@ -88,7 +93,7 @@ function App() {
         />
       </button>
 
-      <button className="map-key-button" onClick={() => console.log('Open Map Key')}>
+      <button className="map-key-button" onClick={openHelp}>
         <img
           src="https://github.com/mike-cautela/MunchiMaps/blob/main/Website/MunchiMaps%20Assets/CookieFavicon.png?raw=true"
           alt="Map Key"
@@ -124,68 +129,40 @@ function App() {
         </div>
       </div>
 
-      <div id="popup-report" className="popup-container">
-        <div className="popup">
-          <div className="popup-header">
-            <span className="popup-close" onClick={closeAllPopups}>
-              &times;
-            </span>
-            <h2>Report Issue</h2>
-          </div>
-          <form
-            id="reportForm"
-            className="popup-form"
-            onSubmit={(e) => {
-              e.preventDefault();
-              console.log('Submit Report');
-            }}
-          >
-            <div className="form-group">
-              <label htmlFor="reportTitle">Title:</label>
-              <input type="text" id="reportTitle" className="form-control" required />
-            </div>
-            <div className="form-group">
-              <label htmlFor="reportType">Type of Issue:</label>
-              <select id="reportType" className="form-control" required>
-                <option value="vending_machine">Vending Machine Issue</option>
-                <option value="location">Location Issue</option>
-                <option value="app_functionality">App Functionality Issue</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-            <div className="form-group">
-              <label htmlFor="reportDescription">Description:</label>
-              <textarea id="reportDescription" className="form-control" required />
-            </div>
-            <button type="submit" className="btn-submit">
-              Submit
-            </button>
-          </form>
-        </div>
-      </div>
+      <div id="help-popup" ref={helpPopupRef} className="help-popup" style={{ display: 'none' }}>
+        <div className="help-content">
+          <span className="close" onClick={closeAllPopups}>&times;</span>
+          <h2>How to Use MunchiMaps:</h2>
+          <p>Look at the MunchiMap to find the nearest vending machine to you!</p>
+          <p>Make sure to check to see if the machine sells snacks and/or drinks</p>
 
-      <div id="buttons-container">
-        <button className="button" onClick={openSearch}>
-          <img
-            src="https://raw.githubusercontent.com/mike-cautela/MunchiMaps/main/Website/MunchiMaps%20Assets/MenuIcons/search-grey.svg"
-            alt="Search"
-            className="button-img"
-          />
-        </button>
-        <button className="button" onClick={() => console.log('Open Report')}>
-          <img
-            src="https://raw.githubusercontent.com/mike-cautela/MunchiMaps/main/Website/MunchiMaps%20Assets/MenuIcons/alert-triangle-grey.svg"
-            alt="Report"
-            className="button-img"
-          />
-        </button>
-        <button className="button" id="Location" onClick={() => console.log('Update Location')}>
-          <img
-            src="https://raw.githubusercontent.com/mike-cautela/MunchiMaps/main/Website/MunchiMaps%20Assets/MenuIcons/crosshair-grey.svg"
-            alt="Location"
-            className="button-img"
-          />
-        </button>
+          <h3>MunchiMap Functions:</h3>
+          <table className="icons-description">
+            <tr className="icon-item">
+              <td>
+                <svg className="help-icon" id="search_icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  {/* <defs>
+                    <style>
+                      .cls-1 {
+                        fill: none;
+                        stroke: #626262;
+                        stroke-linecap: round;
+                        stroke-linejoin: round;
+                        stroke-width: 4px;
+                      }
+                    </style>
+                  </defs> */}
+                  <circle className="cls-1" cx="11" cy="11" r="8" />
+                  <line className="cls-1" x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+              </td>
+              <td>
+                <span>Use the search feature to find the specific building on campus you're snacking in!</span>
+              </td>
+            </tr>
+            {/* Additional rows for Report, Review, Location icons */}
+          </table>
+        </div>
       </div>
     </>
   );
