@@ -662,6 +662,7 @@ z-index: 1000;
 }
 
 .popup {
+color: black;
 background: #fff;
 margin: 50px auto;
 padding: 20px;
